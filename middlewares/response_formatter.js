@@ -5,13 +5,13 @@ var response_formatter = (ctx) => {
     //如果有返回数据，将返回数据添加到data中
     if (ctx.body) {
         ctx.body = {
-            code: 0,
+            result: 0,
             message: 'success',
             data: ctx.body
         }
     } else {
         ctx.body = {
-            code: 0,
+            result: 0,
             message: 'success'
         }
     }
