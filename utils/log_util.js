@@ -9,6 +9,7 @@ var logUtil = {};
 
 var errorLogger = log4js.getLogger('errorLogger');
 var resLogger = log4js.getLogger('resLogger');
+var reportLogger = log4js.getLogger('reportLogger');
 
 //封装错误日志
 logUtil.logError = function (ctx, error, resTime) {
@@ -21,6 +22,13 @@ logUtil.logError = function (ctx, error, resTime) {
 logUtil.logResponse = function (ctx, resTime) {
     if (ctx) {
         resLogger.info(formatRes(ctx, resTime));
+    }
+};
+
+//封装上报日志
+logUtil.logReport = function (ctx) {
+    if (ctx) {
+        reportLogger.info(formatReport(ctx));
     }
 };
 
@@ -47,16 +55,59 @@ var formatRes = function (ctx, resTime) {
 
 }
 
+//格式化上报日志
+var formatReport = function (ctx) {
+    var logText = new String();
+    var req = ctx.request
+
+    //响应日志开始
+    logText += "\n" + "*************** resport log start ***************" + "\n";
+
+    //添加请求日志
+    var method = req.method;
+    //访问方法
+    logText += "request method: " + method + "\n";
+
+    //请求原始地址
+    logText += "request originalUrl:  " + req.originalUrl + "\n";
+
+    //客户端ip
+    logText += "request client ip:  " + req.ip + "\n";
+
+    //请求参数
+    if (method === 'GET') {
+        let query = req.query;
+        logText += "request query:\n";
+        for(let key in query){
+            logText += "  "+key + ":  " + query[key] + "\n";
+        }
+
+        // startTime = req.query.requestStartTime;
+    } else {
+        logText += "request body: " + "\n" + JSON.stringify(req.body) + "\n";
+        // startTime = req.body.requestStartTime;
+    }
+
+
+    //响应状态码
+    logText += "response status: " + ctx.status + "\n";
+
+    //响应内容
+    logText += "response body: " + "\n" + JSON.stringify(ctx.body) + "\n";
+
+    //响应日志结束
+    logText += "*************** resport log end ***************" + "\n";
+
+    return logText;
+}
+
 //格式化错误日志
 var formatError = function (ctx, err, resTime) {
     var logText = new String();
 
     //错误信息开始
     logText += "\n" + "*************** error log start ***************" + "\n";
-
-    //添加请求日志
-    logText += formatReqLog(ctx.request, resTime);
-
+    
     //错误名称
     logText += "err name: " + err.name + "\n";
     //错误信息

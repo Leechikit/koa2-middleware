@@ -12,6 +12,8 @@ const logger = require('koa-logger');
 const index = require('./routes/index');
 const users = require('./routes/users');
 const api = require('./routes/api');
+const log = require('./routes/log');
+const test = require('./routes/test');
 const response_formatter = require('./middlewares/response_formatter');
 
 // middlewares
@@ -21,7 +23,7 @@ app.use(convert(logger()));
 app.use(require('koa-static')(__dirname + '/public'));
 
 app.use(views(__dirname + '/views', {
-  extension: 'xtpl'
+  extension: 'jade'
 }));
 
 //log工具
@@ -49,13 +51,14 @@ app.use(async (ctx, next) => {
   }
 });
 
-//仅对/api开头的url进行格式化处理
 app.use(response_formatter('^/api'));
 
 router.use('/api', api.routes(), api.allowedMethods());
 
 router.use('/', index.routes(), index.allowedMethods());
 router.use('/users', users.routes(), users.allowedMethods());
+router.use('/log', log.routes(), log.allowedMethods());
+router.use('/test', test.routes(), test.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
 // response

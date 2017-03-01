@@ -20,6 +20,14 @@ var responseFileName = "response";
 var responseLogPath = baseLogPath + responsePath + "/" + responseFileName;
 // var responseLogPath = path.resolve(__dirname, "../logs/response/response");
 
+//上报日志目录
+var reportPath = "/report";
+//上报日志文件名
+var reportFileName = "report";
+//上报日志输出完整路径
+var reportLogPath = baseLogPath + reportPath + "/" + reportFileName;
+// var reportLogPath = path.resolve(__dirname, "../logs/report/report");
+
 module.exports = {
     "appenders":
     [
@@ -40,12 +48,22 @@ module.exports = {
             "alwaysIncludePattern":true,
             "pattern": "-yyyy-MM-dd-hh.log",
             "path": responsePath  
+        },
+        //上报日志
+        {
+            "category":"reportLogger",
+            "type": "dateFile",
+            "filename": reportLogPath,
+            "alwaysIncludePattern":true,
+            "pattern": "-yyyy-MM-dd.log",
+            "path": reportPath  
         }
     ],
     "levels":                                   //设置logger名称对应的的日志等级
     {
         "errorLogger":"ERROR",
-        "resLogger":"ALL"
+        "resLogger":"ALL",
+        "reportLogger":"ALL"
     },
     "baseLogPath": baseLogPath                  //logs根目录
 }
