@@ -33,37 +33,50 @@ module.exports = {
     [
         //错误日志
         {
-            "category":"errorLogger",             //logger名称
+            "category": "errorLogger",             //logger名称
             "type": "dateFile",                   //日志类型
             "filename": errorLogPath,             //日志输出位置
-            "alwaysIncludePattern":true,          //是否总是有后缀名
+            "alwaysIncludePattern": true,          //是否总是有后缀名
             "pattern": "-yyyy-MM-dd-hh.log",      //后缀，每小时创建一个新的日志文件
             "path": errorPath                     //自定义属性，错误日志的根目录
         },
         //响应日志
         {
-            "category":"resLogger",
+            "category": "resLogger",
             "type": "dateFile",
             "filename": responseLogPath,
-            "alwaysIncludePattern":true,
+            "alwaysIncludePattern": true,
             "pattern": "-yyyy-MM-dd-hh.log",
-            "path": responsePath  
+            "path": responsePath
         },
         //上报日志
         {
-            "category":"reportLogger",
-            "type": "dateFile",
+            "category": "reportLogger",
             "filename": reportLogPath,
-            "alwaysIncludePattern":true,
+            "alwaysIncludePattern": true,
             "pattern": "-yyyy-MM-dd.log",
-            "path": reportPath  
+            "path": reportPath,
+            "type": "smtp",
+            "recipients": "279148001@qq.com",
+            "sendInterval": 5,
+            "transport": "SMTP",
+            "SMTP": {
+                "host": "smtp.gmail.com",
+                "secureConnection": true,
+                "port": 465,
+                "auth": {
+                    "user": "leechikit0823@gmail.com",
+                    "pass": "571823eric"
+                },
+                "debug": true
+            }
         }
     ],
     "levels":                                   //设置logger名称对应的的日志等级
     {
-        "errorLogger":"ERROR",
-        "resLogger":"ALL",
-        "reportLogger":"ALL"
+        "errorLogger": "ERROR",
+        "resLogger": "ALL",
+        "reportLogger": "INFO"
     },
     "baseLogPath": baseLogPath                  //logs根目录
 }

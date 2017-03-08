@@ -8,6 +8,7 @@ const json = require('koa-json');
 const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
+const nodemailer = require('nodemailer');
 
 const index = require('./routes/index');
 const users = require('./routes/users');
