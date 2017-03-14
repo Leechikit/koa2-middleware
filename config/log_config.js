@@ -56,20 +56,21 @@ module.exports = {
             "alwaysIncludePattern": true,
             "pattern": "-yyyy-MM-dd.log",
             "path": reportPath,
-            "type": "smtp",
-            "recipients": "279148001@qq.com",
-            "sendInterval": 5,
-            "transport": "SMTP",
-            "SMTP": {
-                "host": "smtp.gmail.com",
-                "secureConnection": true,
-                "port": 465,
-                "auth": {
-                    "user": "leechikit0823@gmail.com",
-                    "pass": "571823eric"
-                },
-                "debug": true
-            }
+            "type": "dateFile"
+            // "type": "smtp",
+            // "recipients": "279148001@qq.com",
+            // "sendInterval": 5,
+            // "transport": "SMTP",
+            // "SMTP": {
+            //     "host": "smtp.gmail.com",
+            //     "secureConnection": true,
+            //     "port": 465,
+            //     "auth": {
+            //         "user": "leechikit0823@gmail.com",
+            //         "pass": "571823eric"
+            //     },
+            //     "debug": true
+            // }
         }
     ],
     "levels":                                   //设置logger名称对应的的日志等级

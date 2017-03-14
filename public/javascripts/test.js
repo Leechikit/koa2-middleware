@@ -12,14 +12,15 @@ let getParam = (opt)=>{
     return param.join("&");
 }
 
-let reportEvent = (eventid,desc,bak1) => {
+let reportEvent = (reportType,reportValue,appVersion,phoneType) => {
     let param = getParam({
-        eventid,
-        desc,
-        bak1
+        reportType,
+        reportValue,
+        appVersion,
+        phoneType
     })
     let img = new Image();
     img.src =  url + "?" + param;
 }
 
-reportEvent(18000,'服务器连接错误');
+reportEvent(1,'http://apis.com/test.action','6.1.0',1);

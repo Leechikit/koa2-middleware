@@ -1,29 +1,18 @@
 var log4js = require('log4js');
-
+var mongoAppender = require('./log4js-node-mongodb');
 var log_config = require('../config/log_config');
 
 //加载配置文件
 log4js.configure(log_config);
 
+log4js.addAppender(
+    mongoAppender.appender({connectionString: '127.0.0.1:27017/logs',collectionName:'errorreports'}),
+    'reportLogger'
+);
+
 var logUtil = {};
 
-var errorLogger = log4js.getLogger('errorLogger');
-var resLogger = log4js.getLogger('resLogger');
 var reportLogger = log4js.getLogger('reportLogger');
-
-//封装错误日志
-logUtil.logError = function (ctx, error, resTime) {
-    if (ctx && error) {
-        errorLogger.error(formatError(ctx, error, resTime));
-    }
-};
-
-//封装响应日志
-logUtil.logResponse = function (ctx, resTime) {
-    if (ctx) {
-        resLogger.info(formatRes(ctx, resTime));
-    }
-};
 
 //封装上报日志
 logUtil.logReport = function (ctx) {
@@ -32,125 +21,28 @@ logUtil.logReport = function (ctx) {
     }
 };
 
-//格式化响应日志
-var formatRes = function (ctx, resTime) {
-    var logText = new String();
-
-    //响应日志开始
-    logText += "\n" + "*************** response log start ***************" + "\n";
-
-    //添加请求日志
-    logText += formatReqLog(ctx.request, resTime);
-
-    //响应状态码
-    logText += "response status: " + ctx.status + "\n";
-
-    //响应内容
-    logText += "response body: " + "\n" + JSON.stringify(ctx.body) + "\n";
-
-    //响应日志结束
-    logText += "*************** response log end ***************" + "\n";
-
-    return logText;
-
-}
-
 //格式化上报日志
 var formatReport = function (ctx) {
-    var logText = new String();
+    var logObj = new Object();
     var req = ctx.request
-
-    //响应日志开始
-    logText += "\n" + "*************** resport log start ***************" + "\n";
 
     //添加请求日志
     var method = req.method;
-    //访问方法
-    logText += "request method: " + method + "\n";
-
-    //请求原始地址
-    logText += "request originalUrl:  " + req.originalUrl + "\n";
-
-    //客户端ip
-    logText += "request client ip:  " + req.ip + "\n";
-
+    //请求头
+    //logObj["user-agent"] = req.header["user-agent"];
+    //页面地址
+    logObj["url"] = req.header["referer"];
     //请求参数
     if (method === 'GET') {
         let query = req.query;
-        logText += "request query:\n";
         for(let key in query){
-            logText += "  "+key + ":  " + query[key] + "\n";
-        }
-
-        // startTime = req.query.requestStartTime;
+            logObj[key] = query[key];
+        };
     } else {
-        logText += "request body: " + "\n" + JSON.stringify(req.body) + "\n";
-        // startTime = req.body.requestStartTime;
+        logObj["request body"] = req.body;
     }
 
-
-    //响应状态码
-    logText += "response status: " + ctx.status + "\n";
-
-    //响应内容
-    logText += "response body: " + "\n" + JSON.stringify(ctx.body) + "\n";
-
-    //响应日志结束
-    logText += "*************** resport log end ***************" + "\n";
-
-    return logText;
-}
-
-//格式化错误日志
-var formatError = function (ctx, err, resTime) {
-    var logText = new String();
-
-    //错误信息开始
-    logText += "\n" + "*************** error log start ***************" + "\n";
-    
-    //错误名称
-    logText += "err name: " + err.name + "\n";
-    //错误信息
-    logText += "err message: " + err.message + "\n";
-    //错误详情
-    logText += "err stack: " + err.stack + "\n";
-
-    //错误信息结束
-    logText += "*************** error log end ***************" + "\n";
-
-    return logText;
-};
-
-//格式化请求日志
-var formatReqLog = function (req, resTime) {
-
-    var logText = new String();
-
-    var method = req.method;
-    //访问方法
-    logText += "request method: " + method + "\n";
-
-    //请求原始地址
-    logText += "request originalUrl:  " + req.originalUrl + "\n";
-
-    //客户端ip
-    logText += "request client ip:  " + req.ip + "\n";
-
-    //开始时间
-    var startTime;
-
-    //请求参数
-    if (method === 'GET') {
-        logText += "request query:  " + JSON.stringify(req.query) + "\n";
-        // startTime = req.query.requestStartTime;
-    } else {
-        logText += "request body: " + "\n" + JSON.stringify(req.body) + "\n";
-        // startTime = req.body.requestStartTime;
-    }
-    //服务器响应时间
-    logText += "response time: " + resTime + "\n";
-
-    return logText;
+    return logObj;
 }
 
 module.exports = logUtil;

@@ -28,29 +28,31 @@ app.use(views(__dirname + '/views', {
 }));
 
 //log工具
-const logUtil = require('./utils/log_util');
+//const logUtil = require('./utils/log_util');
+// log上报
+const report_error = require('./utils/report_error');
 
 // logger
-app.use(async (ctx, next) => {
-  //响应开始时间
-  const start = new Date();
-  //响应间隔时间
-  var ms;
-  try {
-    //开始进入到下一个中间件
-    await next();
+// app.use(async (ctx, next) => {
+//   //响应开始时间
+//   const start = new Date();
+//   //响应间隔时间
+//   var ms;
+//   try {
+//     //开始进入到下一个中间件
+//     await next();
 
-    ms = new Date() - start;
-    //记录响应日志
-    logUtil.logResponse(ctx, ms);
+//     ms = new Date() - start;
+//     //记录响应日志
+//     logUtil.logResponse(ctx, ms);
 
-  } catch (error) {
+//   } catch (error) {
 
-    ms = new Date() - start;
-    //记录异常日志
-    logUtil.logError(ctx, error, ms);
-  }
-});
+//     ms = new Date() - start;
+//     //记录异常日志
+//     logUtil.logError(ctx, error, ms);
+//   }
+// });
 
 app.use(response_formatter('^/api'));
 
