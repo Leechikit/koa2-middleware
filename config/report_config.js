@@ -6,7 +6,8 @@ export default {
         reportDay: 1,
         reportLimit: 3,
         emails: [
-            '279148001@qq.com',
+            'lizijie@yy.com',
+            '308695699@qq.com',
             '2772217928@qq.com'
         ]
     },
@@ -15,6 +16,9 @@ export default {
         watch: true,
         checktime: 10000,
         reportDay: 1,
-        reportLimit: 3
+        reportLimit: 3,
+        emails: [
+            '2772217928@qq.com'
+        ]
     }
 }

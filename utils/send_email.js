@@ -12,17 +12,19 @@ let transport = nodemailer.createTransport(smtpTransport({
 }));
 
 let sendMail = (receiver, theme, html) => {
-    transport.sendMail({
-        from: config.user,
-        to: receiver,
-        subject: theme,
-        html: html
-    }, (err, res) => {
-        if (err) {
-            console.log(err);
-        } else {
-            console.log('发送成功');
-        }
+    return new Promise((resolve,reject)=>{
+        transport.sendMail({
+            from: config.user,
+            to: receiver,
+            subject: theme,
+            html: html
+        }, (err, res) => {
+            if (err) {
+                console.log(err);
+            } else {
+                console.log('发送成功');
+            }
+        });
     });
 }
 

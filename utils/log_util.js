@@ -32,6 +32,11 @@ var formatReport = function (ctx) {
     //logObj["user-agent"] = req.header["user-agent"];
     //页面地址
     logObj["url"] = req.header["referer"];
+    //上报时间
+    let date = new Date();
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    logObj["time"] = date.getTime();
     //请求参数
     if (method === 'GET') {
         let query = req.query;
