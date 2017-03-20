@@ -1,4 +1,4 @@
-const url = "/log/j.gif";
+const url = "/log/w";
 
 let getParam = (opt)=>{
     let obj = opt;
@@ -22,4 +22,4 @@ let reportEvent = (reportType,reportValue,appVersion,phoneType) => {
     img.src =  url + "?" + param;
 }
 
-reportEvent(2,'http://apis.com/test2.action','6.0.0',2);
+reportEvent(2,'http://apis.com/test1.action','6.1.0',1);

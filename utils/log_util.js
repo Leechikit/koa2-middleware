@@ -24,7 +24,7 @@ logUtil.logReport = function (ctx) {
 //格式化上报日志
 var formatReport = function (ctx) {
     var logObj = new Object();
-    var req = ctx.request
+    var req = ctx.request;
 
     //添加请求日志
     var method = req.method;
@@ -46,7 +46,6 @@ var formatReport = function (ctx) {
     } else {
         logObj["request body"] = req.body;
     }
-
     return logObj;
 }
 
