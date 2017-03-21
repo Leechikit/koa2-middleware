@@ -1,6 +1,7 @@
 var log4js = require('log4js');
 var mongoAppender = require('./log4js-node-mongodb');
 var log_config = require('../config/log_config');
+const realtimeReport = require('./realtimeReport');
 
 //加载配置文件
 log4js.configure(log_config);
@@ -17,7 +18,9 @@ var reportLogger = log4js.getLogger('reportLogger');
 //封装上报日志
 logUtil.logReport = function (ctx) {
     if (ctx) {
-        reportLogger.info(formatReport(ctx));
+        let reportCtx = formatReport(ctx);
+        reportLogger.info(reportCtx);
+        realtimeReport(reportCtx.reportType,reportCtx.time);
     }
 };
 

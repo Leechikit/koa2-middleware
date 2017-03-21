@@ -11,7 +11,6 @@ const logger = require('koa-logger');
 const nodemailer = require('nodemailer');
 
 const index = require('./routes/index');
-const users = require('./routes/users');
 const api = require('./routes/api');
 const log = require('./routes/log');
 const test = require('./routes/test');
@@ -30,8 +29,8 @@ app.use(views(__dirname + '/views', {
 //log工具
 //const logUtil = require('./utils/log_util');
 // log上报
-const report_error = require('./utils/report_error');
-
+const dayReport = require('./utils/dayReport');
+dayReport();
 // logger
 // app.use(async (ctx, next) => {
 //   //响应开始时间
@@ -57,9 +56,6 @@ const report_error = require('./utils/report_error');
 app.use(response_formatter('^/api'));
 
 router.use('/api', api.routes(), api.allowedMethods());
-
-router.use('/', index.routes(), index.allowedMethods());
-router.use('/users', users.routes(), users.allowedMethods());
 router.use('/log', log.routes(), log.allowedMethods());
 router.use('/test', test.routes(), test.allowedMethods());
 

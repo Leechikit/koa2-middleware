@@ -14,7 +14,7 @@ export default {
     2: {
         name: '碎钻商城',
         watch: true,
-        checktime: 10000,
+        checktime: 60000,
         reportDay: 1,
         reportLimit: 3,
         emails: [

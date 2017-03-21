@@ -1,6 +1,6 @@
 var router = require('koa-router')();
-var user_router = require('./user_router');
+var getAllData_router = require('./getAllData_router');
 
-router.use('/users', user_router.routes(), user_router.allowedMethods());
+router.use('/getAllData', getAllData_router.routes(), getAllData_router.allowedMethods());
 
 module.exports = router;

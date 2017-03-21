@@ -1,5 +1,4 @@
 var router = require('koa-router')();
-var controller = require('../controllers/log_controller');
 //log工具
 const logUtil = require('../utils/log_util');
 

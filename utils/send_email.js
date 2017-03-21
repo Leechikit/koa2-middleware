@@ -13,7 +13,6 @@ let transport = nodemailer.createTransport(smtpTransport({
 
 let sendMail = (receiver, theme, html) => {
     return new Promise((resolve,reject)=>{
-        console.log(html);
         transport.sendMail({
             from: config.user,
             to: receiver,

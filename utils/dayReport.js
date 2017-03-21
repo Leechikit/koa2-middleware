@@ -4,6 +4,7 @@ const reportConfig = require('../config/report_config');
 const hostConfig = require('../config/host_config');
 const logFormat = require('./logFormat');
 const LogModel = require('./logModel');
+const DURATION = 60000;
 
 function getNowDate() {
     let nowDate = new Date();
@@ -40,29 +41,6 @@ function findLog(obj) {
     });
 }
 
-function loopDate() {
-    let [configHour, configMinute] = getConfigDate();
-    let interval = setInterval(() => {
-        let [nowHour, nowMinute] = getNowDate();
-        if (configHour == nowHour && configMinute == nowMinute) {
-            let nowDate = new Date();
-            let nowDay = nowDate.getDate();
-            nowDate.setHours(nowHour);
-            nowDate.setMinutes(nowMinute);
-            nowDate.setSeconds(0);
-            nowDate.setMilliseconds(0);
-
-            let lastDate = new Date();
-            lastDate.setDate(nowDay - 1);
-            lastDate.setHours(nowHour);
-            lastDate.setMinutes(nowMinute);
-            lastDate.setSeconds(0);
-            lastDate.setMilliseconds(0);
-            loopReportConfig(lastDate.getTime(), nowDate.getTime());
-        }
-    }, (1000 * 60));
-}
-
 function loopReportConfig(dateMin, dateMax) {
     for (let reportType in reportConfig) {
         let {
@@ -88,4 +66,31 @@ async function reportLogMes(emails,reportType,dateMin,dateMax,name) {
     });
 }
 
+function loopDate() {
+    let [configHour, configMinute] = getConfigDate();
+    let interval = setInterval(() => {
+        let [nowHour, nowMinute] = getNowDate();
+        if (configHour == nowHour && configMinute == nowMinute) {
+            let nowDate = new Date();
+            let nowDay = nowDate.getDate();
+            nowDate.setHours(nowHour);
+            nowDate.setMinutes(nowMinute);
+            nowDate.setSeconds(0);
+            nowDate.setMilliseconds(0);
+
+            let lastDate = new Date();
+            lastDate.setDate(nowDay - 1);
+            lastDate.setHours(nowHour);
+            lastDate.setMinutes(nowMinute);
+            lastDate.setSeconds(0);
+            lastDate.setMilliseconds(0);
+            loopReportConfig(lastDate.getTime(), nowDate.getTime());
+        }
+    }, DURATION);
+}
+// findLog({
+//     reportType:2,
+//     dateMax:1489975560000,
+//     dateMin:1489889520000
+// })
 export default loopDate;
