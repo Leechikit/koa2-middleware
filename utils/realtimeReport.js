@@ -30,13 +30,13 @@ function findLog(query,limit) {
             }else{
                 resolve(res);
             }
-        }).limit(limit);
+        }).sort({'time':-1}).limit(limit);
     });
 }
 
 function saveDate(logs){
     logs.forEach((log)=>{
-        dateCache[log._doc.reportType].push(log._doc.time);
+        dateCache[log._doc.reportType].unshift(log._doc.time);
     });
 }
 
@@ -117,10 +117,12 @@ function countLog(reportType){
 function report(reportType, time){
     addDate(reportType,time);
     let count = countLog(reportType);
+    let theme = reportConfig[reportType]['name'] + '报警通知';
+    let html = `<p>${reportConfig[reportType]['name']}报障数超过${reportConfig[reportType]['reportLimit']}条</p>`;
     if(count >= reportConfig[reportType]['reportLimit']){
         let emails = reportConfig[reportType]['emails'];
         emails.forEach((item) => {
-            sendMail(item, reportConfig[reportType]['name'] + '报警通知', '');
+            sendMail(item, theme, html);
         });
     }
 }
